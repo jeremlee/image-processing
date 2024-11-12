@@ -23,31 +23,19 @@ namespace DIP_Activity
             InitializeComponent();
         }
 
-        /// <summary>
-        /// Load the image from system to application
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void openFileDialog1_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
             pictureBox1.Image = loaded = new Bitmap(openFileDialog1.FileName);
         }
 
-        /// <summary>
-        /// Opens a dialogue for choosing image
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+      
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             openFileDialog1.ShowDialog();
         }
 
-        /// <summary>
-        /// Copy operation of loaded image
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+    
         private void pixelCopyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (loaded == null)
@@ -62,21 +50,12 @@ namespace DIP_Activity
             pictureBox2.Image = processed;
         }
 
-        /// <summary>
-        /// Opens a dialogue for saving an image
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+       
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             saveFileDialog1.ShowDialog();
         }
 
-        /// <summary>
-        /// Save the image after confirming the dialogue
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void saveFileDialog1_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (processed == null)
@@ -85,11 +64,7 @@ namespace DIP_Activity
             processed.Save(saveFileDialog1.FileName);
         }
 
-        /// <summary>
-        /// Applies grayscale of loaded image
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+       
         private void grayscalingToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (loaded == null)
@@ -100,11 +75,6 @@ namespace DIP_Activity
             pictureBox2.Image = copy;
         }
 
-        /// <summary>
-        /// Inverts the colors of loaded image
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void inversionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (loaded == null)
@@ -115,11 +85,7 @@ namespace DIP_Activity
             pictureBox2.Image = copy;
         }
 
-        /// <summary>
-        /// Flip the loaded image horizontally
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+     
         private void mirrorHorizontalToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (loaded == null)
@@ -137,11 +103,7 @@ namespace DIP_Activity
             pictureBox2.Image = processed;
         }
 
-        /// <summary>
-        /// Flip the loaded image vertically
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+      
         private void mirrorVerticalToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (loaded == null)
@@ -159,11 +121,7 @@ namespace DIP_Activity
             pictureBox2.Image = processed;
         }
 
-        /// <summary>
-        /// Shows a histogram(greyscaled) of the loaded image
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+      
         private void histogramToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (loaded == null)
@@ -435,7 +393,7 @@ namespace DIP_Activity
             var img = webcam.QueryFrame().ToImage<Bgr, Byte>();
             Bitmap bmp = img.ToBitmap();
             pictureBox1.Image = bmp;
-            
+            loaded = bmp;
         }
 
         /// <summary>
@@ -457,109 +415,137 @@ namespace DIP_Activity
         {
             Application.Idle -= stream;
             pictureBox1.Image = null;
+            pictureBox2.Image = null;
         }
 
-        /// <summary>
-        /// Enabled timer for video subtract
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+       
         private void subtractToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var img = webcam.QueryFrame().ToImage<Bgr, byte>();
-            Bitmap bmp = img.ToBitmap();
-            processed = new Bitmap(bmp.Width, bmp.Height);
-            CameraOperations.subtraction(ref bmp, ref processed);
+            if (loaded == null) return;
+            processed = new Bitmap(loaded.Width, loaded.Height);
+            CameraOperations.subtraction(ref loaded, ref processed);
             pictureBox2.Image = processed;
         }
 
-        /// <summary>
-        /// Enables timer for copy timer
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (loaded == null) return;
             pictureBox2.Image = pictureBox1.Image;
         }
 
-        
 
-        /// <summary>
-        /// Enables grayscale timer
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void grayscaleToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var img = webcam.QueryFrame().ToImage<Bgr, byte>();
-            Bitmap bmp = img.ToBitmap();
-            processed = new Bitmap(bmp.Width, bmp.Height);
-            CameraOperations.greyScale(ref bmp, ref processed);
+            if (loaded == null) return;
+            processed = new Bitmap(loaded.Width, loaded.Height);
+            CameraOperations.greyScale(ref loaded, ref processed);
             pictureBox2.Image = processed;
         }
 
       
-        /// <summary>
-        /// Enables mirror horizontal timer
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void mirrorHorizontalToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            var img = webcam.QueryFrame().ToImage<Bgr, byte>();
-            Bitmap bmp = img.ToBitmap();
-            processed = new Bitmap(bmp.Width, bmp.Height);
-            CameraOperations.mirrorHorizontal(ref bmp,ref processed);
+            if (loaded == null) return;
+            processed = new Bitmap(loaded.Width, loaded.Height);
+            CameraOperations.mirrorHorizontal(ref loaded, ref processed);
             pictureBox2.Image = processed;
         }
-
-
-        /// <summary>
-        /// Enables mirror vertical timer
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+     
         private void mirrorVerticalToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            var img = webcam.QueryFrame().ToImage<Bgr, byte>();
-            Bitmap bmp = img.ToBitmap();
-            processed = new Bitmap(bmp.Width, bmp.Height);
-            CameraOperations.mirrorVertical(ref bmp, ref processed);
+            if (loaded == null) return;
+            processed = new Bitmap(loaded.Width, loaded.Height);
+            CameraOperations.mirrorVertical(ref loaded, ref processed);
             pictureBox2.Image = processed;
         }
 
-     
-
-        /// <summary>
-        /// Enables histogram timer
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void histogramToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            var img = webcam.QueryFrame().ToImage<Bgr, byte>();
-            Bitmap bmp = img.ToBitmap();
-            processed = new Bitmap(bmp.Width, bmp.Height);
-            CameraOperations.histogram(ref bmp, ref processed);
+            if (loaded == null) return;
+            processed = new Bitmap(loaded.Width, loaded.Height);
+            CameraOperations.histogram(ref loaded, ref processed);
             pictureBox2.Image = processed;
         }
 
 
-        /// <summary>
-        /// Enables sepia timer
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void sepiaToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            var img = webcam.QueryFrame().ToImage<Bgr, byte>();
-            Bitmap bmp = img.ToBitmap();
-            processed = new Bitmap(bmp.Width, bmp.Height);
-            CameraOperations.sepia(ref bmp, ref processed);
+            if (loaded == null) return;
+            processed = new Bitmap(loaded.Width, loaded.Height);
+            CameraOperations.sepia(ref loaded, ref processed);
             pictureBox2.Image = processed;
         }
 
-        
+        private void smoothToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (loaded == null) return;
+            processed = new Bitmap(loaded);
+            BitmapFilter.Smooth(processed);
+            pictureBox2.Image = processed;
+        }
+
+        private void gaussianBlurToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (loaded == null) return;
+            processed = new Bitmap(loaded);
+            BitmapFilter.GaussianBlur(processed);
+            pictureBox2.Image = processed;
+        }
+
+        private void meanRemovalToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (loaded == null) return;
+            processed = new Bitmap(loaded);
+            BitmapFilter.MeanRemoval(processed);
+            pictureBox2.Image = processed;
+        }
+
+        private void embossLaplacianToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (loaded == null) return;
+            processed = new Bitmap(loaded);
+            BitmapFilter.EmbossLaplacian(processed);
+            pictureBox2.Image = processed;
+        }
+
+        private void sharpenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (loaded == null) return;
+            processed = new Bitmap(loaded);
+            BitmapFilter.Sharpen(processed);
+            pictureBox2.Image = processed;
+        }
+
+        private void horizontalVerticalToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (loaded == null) return;
+            processed = new Bitmap(loaded);
+            BitmapFilter.EmbossHorzVertical(processed);
+            pictureBox2.Image = processed;
+        }
+
+        private void embossLossyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (loaded == null) return;
+            processed = new Bitmap(loaded);
+            BitmapFilter.EmbossLossy(processed);
+            pictureBox2.Image = processed;
+        }
+
+        private void horizontalOnlyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (loaded == null) return;
+            processed = new Bitmap(loaded);
+            BitmapFilter.EmbossHorizontal(processed);
+            pictureBox2.Image = processed;
+        }
+
+        private void verticalOnlyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (loaded == null) return;
+            processed = new Bitmap(loaded);
+            BitmapFilter.EmbossVertical(processed);
+            pictureBox2.Image = processed;
+        }
     }
 }
