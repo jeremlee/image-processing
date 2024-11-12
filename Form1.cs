@@ -414,6 +414,7 @@ namespace DIP_Activity
         private void offToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Idle -= stream;
+            loaded = null;
             pictureBox1.Image = null;
             pictureBox2.Image = null;
         }
